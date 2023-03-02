@@ -10,7 +10,7 @@ use std::path::Path;
 use std::str::FromStr;
 
 #[derive(Debug)]
-struct Png {
+pub struct Png {
     header: [u8; 8],
     chunks: Vec<Chunk>,
 }
