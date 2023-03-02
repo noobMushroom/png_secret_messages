@@ -84,7 +84,7 @@ impl Chunk {
     }
 }
 
-fn calculate_from_bytes(bytes: &[u8]) -> u32 {
+pub fn calculate_from_bytes(bytes: &[u8]) -> u32 {
     let mut reader = BufReader::new(bytes);
     let mut buffer = [0_u8; 4];
     reader.read_exact(&mut buffer).unwrap();

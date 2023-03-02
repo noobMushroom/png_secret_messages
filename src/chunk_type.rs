@@ -17,14 +17,14 @@ impl ChunkType {
 
     pub fn is_critical(&self) -> bool {
         let [a, ..] = self.0;
-        if a >= 65 && a <= 90 {
+        if a.is_ascii_uppercase() {
             return true;
         }
         false
     }
     pub fn is_public(&self) -> bool {
         let [_, b, ..] = self.0;
-        if b >= 65 && b <= 90 {
+        if b.is_ascii_uppercase() {
             return true;
         }
         false
@@ -32,14 +32,14 @@ impl ChunkType {
 
     pub fn is_reserved_bit_valid(&self) -> bool {
         let [_, _, c, _] = self.0;
-        if c >= 65 && c <= 90 {
+        if c.is_ascii_uppercase() {
             return true;
         }
         false
     }
     pub fn is_safe_to_copy(&self) -> bool {
         let [.., d] = self.0;
-        if d >= 65 && d <= 90 {
+        if d.is_ascii_uppercase() {
             return false;
         }
         true
@@ -56,7 +56,7 @@ impl ChunkType {
 
     pub fn is_valid(&self) -> bool {
         let [_, _, c, _] = self.0;
-        if c >= 65 && c <= 90 {
+        if c.is_ascii_uppercase() {
             return true;
         }
         false
