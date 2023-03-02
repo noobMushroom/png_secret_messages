@@ -5,7 +5,7 @@ use crate::{Error, Result};
 use std::convert::TryFrom;
 use std::fmt;
 use std::fs;
-use std::io::{BufReader, Read};
+use std::io::Read;
 use std::path::Path;
 use std::str::FromStr;
 
