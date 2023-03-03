@@ -40,7 +40,7 @@ To encode a message, you will need three arguments and one optional argument if 
 ```
   $ ./secret_pics encode example.png coOl "this is your secret message"
   
-  $ ./secret_pics encode example.png coOl "this is your secret message" ~/secret_pictures 
+  $ ./secret_pics encode example.png coOl "this is your secret message" ~/secret_pictures/secretPic.png 
 ```
 
 ### Decoding Examples
