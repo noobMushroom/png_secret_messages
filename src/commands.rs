@@ -65,5 +65,16 @@ pub fn remove(args: RemoveArgs) -> Result<()> {
 
 /// Prints all of the chunks in a PNG file
 pub fn print_chunks(args: PrintArgs) -> Result<()> {
-    todo!()
+    let png = Png::from_file(&args.file_path)?;
+    let chunks = png.chunks();
+    for (i, chunk) in chunks.iter().enumerate() {
+        let data = format!(
+            "[\n{} -> Chunk Type: {}\nMessage: {:?}\n]",
+            i,
+            chunk.chunk_type.to_string(),
+            chunk.data_as_string().unwrap()
+        );
+        println!("{}", data);
+    }
+    Ok(())
 }

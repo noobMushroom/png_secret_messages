@@ -32,9 +32,17 @@ impl Png {
         &self.header
     }
 
-    #[allow(dead_code)]
-    pub fn chunks(&self) -> &[Chunk] {
-        &self.chunks
+    pub fn chunks(&self) -> Vec<&Chunk> {
+        let mut chunks_vec = Vec::with_capacity(100);
+        for chunk in &self.chunks {
+            if !chunk.chunk_type.is_critical()
+                && !chunk.chunk_type.is_public()
+                && chunk.chunk_type.is_safe_to_copy()
+            {
+                chunks_vec.push(chunk)
+            }
+        }
+        chunks_vec
     }
     pub fn as_bytes(&self) -> Vec<u8> {
         let chunks = self.chunks.as_slice();
