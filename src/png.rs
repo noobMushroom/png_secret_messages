@@ -5,7 +5,7 @@ use crate::{Error, Result};
 use std::convert::TryFrom;
 use std::fmt;
 use std::fs;
-use std::io::Read;
+use std::io::{BufReader, Read};
 use std::path::Path;
 use std::str::FromStr;
 
@@ -27,9 +27,12 @@ impl Png {
     pub fn append_chunk(&mut self, chunk: Chunk) {
         self.chunks.push(chunk)
     }
+    #[allow(dead_code)]
     pub fn header(&self) -> &[u8; 8] {
         &self.header
     }
+
+    #[allow(dead_code)]
     pub fn chunks(&self) -> &[Chunk] {
         &self.chunks
     }
@@ -61,32 +64,30 @@ impl Png {
         let chunk = self.chunk_by_type(chunk_type);
         match chunk {
             Some(data) => {
-                let mut index: u32 = 0;
-                for i in &self.chunks {
-                    if i.chunk_type == data.chunk_type {
-                        break;
-                    }
-                    index += 1
+                let index = self
+                    .chunks
+                    .iter()
+                    .position(|c| c.chunk_type == data.chunk_type);
+                if let Some(i) = index {
+                    let chunk = self.chunks.remove(i);
+                    Ok(chunk)
+                } else {
+                    Err(Error::from("chunk is not available"))
                 }
-                Ok(self.chunks.remove(index as usize))
             }
             None => Err(Error::from("chunk is not available")),
         }
     }
     pub fn from_file<P: AsRef<Path>>(path: P) -> Result<Self> {
-        let file = fs::File::open(path);
-        match file {
-            Ok(mut data) => {
-                let mut buffer: Vec<u8> = Vec::with_capacity(10_000_000);
-                match data.read_to_end(&mut buffer) {
-                    Ok(_) => {
-                        let png = Png::try_from(buffer.as_slice().as_ref())?;
-                        Ok(png)
-                    }
-                    Err(_) => Err(Error::from("failed to read")),
-                }
+        let file = fs::File::open(path)?;
+        let mut data = BufReader::new(file);
+        let mut buffer: Vec<u8> = Vec::with_capacity(10_000_000);
+        match data.read_to_end(&mut buffer) {
+            Ok(_) => {
+                let png = Png::try_from(buffer.as_slice().as_ref())?;
+                Ok(png)
             }
-            Err(_) => Err(Error::from("failed to read file")),
+            Err(_) => Err(Error::from("failed to read")),
         }
     }
 }

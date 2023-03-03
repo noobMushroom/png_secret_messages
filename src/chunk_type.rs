@@ -15,6 +15,7 @@ impl ChunkType {
         self.0
     }
 
+    #[allow(dead_code)]
     pub fn is_critical(&self) -> bool {
         let [a, ..] = self.0;
         if a.is_ascii_uppercase() {
@@ -22,6 +23,8 @@ impl ChunkType {
         }
         false
     }
+
+    #[allow(dead_code)]
     pub fn is_public(&self) -> bool {
         let [_, b, ..] = self.0;
         if b.is_ascii_uppercase() {
@@ -30,6 +33,7 @@ impl ChunkType {
         false
     }
 
+    #[allow(dead_code)]
     pub fn is_reserved_bit_valid(&self) -> bool {
         let [_, _, c, _] = self.0;
         if c.is_ascii_uppercase() {
@@ -37,6 +41,8 @@ impl ChunkType {
         }
         false
     }
+
+    #[allow(dead_code)]
     pub fn is_safe_to_copy(&self) -> bool {
         let [.., d] = self.0;
         if d.is_ascii_uppercase() {
@@ -44,6 +50,8 @@ impl ChunkType {
         }
         true
     }
+
+    #[allow(dead_code)]
     pub fn is_valid_byte(byte: u8) -> bool {
         if byte.is_ascii_alphabetic() {
             return true;
