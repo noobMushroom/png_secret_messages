@@ -74,11 +74,20 @@ impl Png {
         }
     }
     pub fn from_file<P: AsRef<Path>>(path: P) -> Result<Self> {
-        let mut file = fs::File::open(path)?;
-        let mut buffer: Vec<u8> = vec![];
-        file.read(&mut buffer)?;
-        let png = Png::try_from(buffer.as_slice().as_ref())?;
-        Ok(png)
+        let file = fs::File::open(path);
+        match file {
+            Ok(mut data) => {
+                let mut buffer: Vec<u8> = Vec::with_capacity(10_000_000);
+                match data.read_to_end(&mut buffer) {
+                    Ok(_) => {
+                        let png = Png::try_from(buffer.as_slice().as_ref())?;
+                        Ok(png)
+                    }
+                    Err(_) => Err(Error::from("failed to read")),
+                }
+            }
+            Err(_) => Err(Error::from("failed to read file")),
+        }
     }
 }
 impl fmt::Display for Png {

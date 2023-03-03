@@ -1,13 +1,6 @@
-use clap::{Args, Parser, Subcommand};
+use clap::{Args, Subcommand};
 use std::path::PathBuf;
 
-#[derive(Parser)]
-#[command(author, version, about, long_about = None)]
-#[command(propagate_version = true)]
-struct Cli {
-    #[command(subcommand)]
-    args: PngMeArgs,
-}
 #[derive(Subcommand)]
 pub enum PngMeArgs {
     Encode(EncodeArgs),
