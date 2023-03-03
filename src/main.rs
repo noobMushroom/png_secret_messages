@@ -8,8 +8,10 @@ use crate::commands::{decode, encode, print_chunks, remove};
 use clap::Parser;
 
 #[derive(Parser)]
-#[command(author, version, about, long_about = None)]
-#[command(propagate_version = true)]
+#[command(name = "Secret Messages")]
+#[command(author = "Mushroom <mushroom020@proton.me>")]
+#[command(version = "1.0")]
+#[command(about = "encodes and decodes secret messages into the png files", long_about = None)]
 struct Cli {
     #[command(subcommand)]
     pub args: PngMeArgs,

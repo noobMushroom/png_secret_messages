@@ -3,9 +3,13 @@ use std::path::PathBuf;
 
 #[derive(Subcommand)]
 pub enum PngMeArgs {
+    /// Encode Message to the given file or the file you provide
     Encode(EncodeArgs),
+    /// Decode message
     Decode(DecodeArgs),
+    /// Remove message
     Remove(RemoveArgs),
+    /// Print all the messages
     Print(PrintArgs),
 }
 #[derive(Args)]
